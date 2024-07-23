@@ -30,10 +30,10 @@ async def on_message(message):
 
     if msg.startswith("!allnews"):
         stories, urls = crawl_news()
-        # for i in range(len(stories)):
-        #     await message.channel.send(
-        #         f"{stories[i]} - {urls[i]}"
-        #     )
+        for i in range(len(stories)):
+            await message.channel.send(
+                f"{stories[i]} - {urls[i]}"
+            )
     if msg.startswith("!nextnews"):
         story, url = next_news()
         await message.channel.send(

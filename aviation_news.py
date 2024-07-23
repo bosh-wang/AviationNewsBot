@@ -42,11 +42,11 @@ def crawl_news():
         stories.append(story_name)
         urls.append(url)
 
-    data = {'story' : stories,
-            'url' : urls,
-            'read' : False}
-    df = pd.DataFrame(data)
-    df.to_csv('all_news.csv', index=False)
+    # data = {'story' : stories,
+    #         'url' : urls,
+    #         'read' : False}
+    # df = pd.DataFrame(data)
+    # df.to_csv('all_news.csv', index=False)
 
     return stories, urls
 
@@ -60,6 +60,15 @@ def next_news():
     return df['story'][i], df['url'][i]
     
 def latest_news():
-    df = pd.read_csv('all_news.csv')
-    last_element = df.iloc[-1]
-    return last_element['story'], last_element['url']
+    
+    url = 'https://flyfttw.com/category/all/'
+    
+    headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+    response = requests.get(url, headers=headers)
+
+    soup = BeautifulSoup(response.text, 'html.parser')
+    paragraphs = soup.find_all(class_="entry-title ast-blog-single-element")
+
+    return paragraphs[0].text, paragraphs[0].find_all('a')[0].get('href')
