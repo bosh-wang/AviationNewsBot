@@ -44,7 +44,8 @@ def crawl_news():
 
     # data = {'story' : stories,
     #         'url' : urls,
-    #         'read' : False}
+    #         'read' : False, 
+    #         'starred' : False}
     # df = pd.DataFrame(data)
     # df.to_csv('all_news.csv', index=False)
 
@@ -72,3 +73,19 @@ def latest_news():
     paragraphs = soup.find_all(class_="entry-title ast-blog-single-element")
 
     return paragraphs[0].text, paragraphs[0].find_all('a')[0].get('href')
+
+def star_news(story):
+    df = pd.read_csv('all_news.csv')
+    for i in range(len(df)):
+        if df['story'][i] == story:
+            df['starred'][i] = True
+            df.to_csv('all_news.csv', index=False)
+            break
+            
+def get_starred_news():
+    df = pd.read_csv('all_news.csv')
+    starred = []
+    for i in range(len(df)):
+        if df['starred'][i]:
+            starred.append(df['story'][i])
+    return
